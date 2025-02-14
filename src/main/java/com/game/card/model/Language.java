@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 public class Language {
 
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id")
     private Long id;
@@ -22,7 +23,7 @@ public class Language {
     @Column(name = "language_name")
     private String name;
 
-    @OneToMany(mappedBy = "language")
+    @OneToMany(mappedBy = "language", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Card> cards;
 
 }

@@ -1,16 +1,21 @@
 package com.game.card.service;
 
-import com.game.card.model.Card;
+import com.game.card.dto.DtoCard;
+import com.game.card.dto.DtoUpdateCard;
 
 import java.util.List;
 
 public interface CardService {
 
-    Card addNewCard(Card card);
+    DtoCard addNewCard(DtoCard card);
 
-    Card getCardById(Long id);
+    DtoCard getCardById(Long id);
 
     void deleteCardById(Long id);
 
-    List<Card> getAllCards();
+    List<DtoCard> getAllCards();
+
+    List<DtoCard> getCardsByLanguage(String language);
+
+    DtoCard updateCard(Long id, DtoUpdateCard cardUpdate);
 }

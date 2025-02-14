@@ -6,14 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class dtoCardRequest {
-
-    private String word;
-
-    private String languageName;
+@AllArgsConstructor
+public class DtoUpdateCard {
 
     private String translation;
+
+    private String word;
 
 }
