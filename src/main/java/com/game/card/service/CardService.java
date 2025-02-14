@@ -1,7 +1,7 @@
 package com.game.card.service;
 
 import com.game.card.dto.DtoCard;
-import com.game.card.dto.DtoUpdateCard;
+import com.game.card.dto.dtoRequest.DtoUpdateCard;
 
 import java.util.List;
 

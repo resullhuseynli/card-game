@@ -1,8 +1,8 @@
 package com.game.card.controller;
 
 
-import com.game.card.dto.DtoLanguageRequest;
-import com.game.card.dto.DtoLanguageResponse;
+import com.game.card.dto.dtoRequest.DtoLanguageRequest;
+import com.game.card.dto.dtoResponse.DtoLanguageResponse;
 import com.game.card.service.LanguageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

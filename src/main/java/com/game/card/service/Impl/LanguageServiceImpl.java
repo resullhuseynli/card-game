@@ -1,9 +1,8 @@
 package com.game.card.service.Impl;
 
-import com.game.card.dto.DtoCard;
-import com.game.card.dto.DtoLanguageRequest;
-import com.game.card.dto.DtoLanguageResponse;
-import com.game.card.model.Card;
+import com.game.card.dto.dtoRequest.DtoLanguageRequest;
+import com.game.card.dto.dtoResponse.DtoLanguageResponse;
+import com.game.card.mapper.LanguageMapper;
 import com.game.card.model.Language;
 import com.game.card.repository.CardRepository;
 import com.game.card.repository.LanguageRepository;
@@ -24,36 +23,32 @@ public class LanguageServiceImpl implements LanguageService {
 
     private final CardRepository cardRepository;
 
-    public LanguageServiceImpl(LanguageRepository languageRepository, CardRepository cardRepository) {
+    private final LanguageMapper languageMapper;
+
+
+    public LanguageServiceImpl(LanguageRepository languageRepository, CardRepository cardRepository, LanguageMapper languageMapper) {
+
         this.languageRepository = languageRepository;
         this.cardRepository = cardRepository;
+        this.languageMapper = languageMapper;
+
     }
 
 
     @Override
     public DtoLanguageResponse addNewLanguage(DtoLanguageRequest dtoLanguageRequest) {
 
-        DtoLanguageResponse dtoLanguageResponse = new DtoLanguageResponse();
         Language language = new Language();
-        String dtoName = dtoLanguageRequest.getLanguageName();
-        dtoName = dtoName.toUpperCase().charAt(0) + dtoName.substring(1).toLowerCase().trim();
-        language.setName(dtoName);
+        language.setName(stringConverter(dtoLanguageRequest.getLanguageName()));
+
         if (languageRepository.findByLanguageName(language.getName()).isPresent()) {
+
             throw new IllegalArgumentException("Language already exists");
+
         } else {
             languageRepository.save(language);
-            dtoLanguageResponse.setName(language.getName());
-            List<Card> cards = cardRepository.findCardByLanguage(language.getName());
-            List<DtoCard> dtoCards = new ArrayList<>();
-            cards.forEach(card -> {
-                DtoCard dtoCard = new DtoCard();
-                dtoCard.setWord(card.getWord());
-                dtoCard.setTranslation(card.getTranslation());
-                dtoCard.setLanguage(card.getLanguage().getName());
-                dtoCards.add(dtoCard);
-            });
-            dtoLanguageResponse.setCards(dtoCards);
-            return dtoLanguageResponse;
+
+            return languageMapper.toDtoLanguageResponse(language);
         }
 
 
@@ -62,24 +57,16 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     public DtoLanguageResponse getLanguageByName(String nameRequest) {
 
-        String name = nameRequest.toUpperCase().charAt(0) + nameRequest.substring(1).toLowerCase().trim();
-        Optional<Language> language = languageRepository.findByLanguageName(name);
+        Optional<Language> language = languageRepository.findByLanguageName(stringConverter(nameRequest));
+
         if (language.isEmpty()) {
+
             throw new EntityNotFoundException("Language not found");
+
         } else {
-        DtoLanguageResponse dtoLanguageResponse = new DtoLanguageResponse();
-        dtoLanguageResponse.setName(language.get().getName());
-        List<Card> cards = cardRepository.findCardByLanguage(language.get().getName());
-        List<DtoCard> dtoCards = new ArrayList<>();
-        cards.forEach(card -> {
-            DtoCard dtoCard = new DtoCard();
-            dtoCard.setWord(card.getWord());
-            dtoCard.setTranslation(card.getTranslation());
-            dtoCard.setLanguage(card.getLanguage().getName());
-            dtoCards.add(dtoCard);
-        });
-        dtoLanguageResponse.setCards(dtoCards);
-        return dtoLanguageResponse;
+
+            return languageMapper.toDtoLanguageResponse(language.get());
+
         }
 
     }
@@ -88,13 +75,16 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     public void deleteLanguageByName(String nameRequest) {
 
-        String name = nameRequest.toUpperCase().charAt(0) + nameRequest.substring(1).toLowerCase().trim();
-        Optional<Language> language = languageRepository.findByLanguageName(name);
+        Optional<Language> language = languageRepository.findByLanguageName(stringConverter(nameRequest));
+
         if (language.isEmpty()) {
+
             throw new EntityNotFoundException("Language not found");
+
         }
+
         cardRepository.deleteByLanguage(language.get().getId());
-        languageRepository.deleteByLanguageName(name);
+        languageRepository.deleteByLanguageName(stringConverter(nameRequest));
 
     }
 
@@ -103,21 +93,12 @@ public class LanguageServiceImpl implements LanguageService {
 
         List<Language> languageList = languageRepository.findAll();
         List<DtoLanguageResponse> response = new ArrayList<>();
-        languageList.forEach(language -> {
-            DtoLanguageResponse dtoLanguageResponse = new DtoLanguageResponse();
-            dtoLanguageResponse.setName(language.getName());
-            List<Card> cards = cardRepository.findCardByLanguage(language.getName());
-            List<DtoCard> dtoCards = new ArrayList<>();
-            cards.forEach(card -> {
-                DtoCard dtoCard = new DtoCard();
-                dtoCard.setWord(card.getWord());
-                dtoCard.setTranslation(card.getTranslation());
-                dtoCard.setLanguage(card.getLanguage().getName());
-                dtoCards.add(dtoCard);
-            });
-            dtoLanguageResponse.setCards(dtoCards);
 
+        languageList.forEach(language -> {
+
+            DtoLanguageResponse dtoLanguageResponse = languageMapper.toDtoLanguageResponse(language);
             response.add(dtoLanguageResponse);
+
         });
 
         return response;
@@ -127,33 +108,24 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     public DtoLanguageResponse updateLanguage(String nameRequest, DtoLanguageRequest dtoLanguageRequest) {
 
-        String name = nameRequest.toUpperCase().charAt(0) + nameRequest.substring(1).toLowerCase().trim();
-        Optional<Language> languageOptional = languageRepository.findByLanguageName(name);
+        Optional<Language> languageOptional = languageRepository.findByLanguageName(stringConverter(nameRequest));
         if (languageOptional.isEmpty()) {
             throw new EntityNotFoundException("Language not found");
         } else {
             Language language = languageOptional.get();
-            String updatedName = (dtoLanguageRequest.getLanguageName());
-            updatedName = updatedName.toUpperCase().charAt(0) + updatedName.substring(1).toLowerCase().trim();
+            String updatedName = stringConverter(dtoLanguageRequest.getLanguageName());
             language.setName(updatedName);
             languageRepository.save(language);
-            DtoLanguageResponse dtoLanguageResponse = new DtoLanguageResponse();
-            dtoLanguageResponse.setName(language.getName());
-            List<Card> cards = cardRepository.findCardByLanguage(language.getName());
-            List<DtoCard> dtoCards = new ArrayList<>();
-            cards.forEach(card -> {
-                DtoCard dtoCard = new DtoCard();
-                dtoCard.setWord(card.getWord());
-                dtoCard.setTranslation(card.getTranslation());
-                dtoCard.setLanguage(card.getLanguage().getName());
-                dtoCards.add(dtoCard);
-            });
-            dtoLanguageResponse.setCards(dtoCards);
-            return dtoLanguageResponse;
+
+            return languageMapper.toDtoLanguageResponse(language);
 
         }
 
     }
 
+
+    private String stringConverter(String name) {
+        return name.toUpperCase().charAt(0) + name.substring(1).toLowerCase().trim();
+    }
 
 }

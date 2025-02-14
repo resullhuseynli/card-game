@@ -1,6 +1,7 @@
-package com.game.card.dto;
+package com.game.card.dto.dtoResponse;
 
 
+import com.game.card.dto.DtoCard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

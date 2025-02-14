@@ -1,7 +1,7 @@
 package com.game.card.service;
 
-import com.game.card.dto.DtoLanguageRequest;
-import com.game.card.dto.DtoLanguageResponse;
+import com.game.card.dto.dtoRequest.DtoLanguageRequest;
+import com.game.card.dto.dtoResponse.DtoLanguageResponse;
 
 import java.util.List;
 

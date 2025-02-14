@@ -2,7 +2,7 @@ package com.game.card.controller;
 
 
 import com.game.card.dto.DtoCard;
-import com.game.card.dto.DtoUpdateCard;
+import com.game.card.dto.dtoRequest.DtoUpdateCard;
 import com.game.card.service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

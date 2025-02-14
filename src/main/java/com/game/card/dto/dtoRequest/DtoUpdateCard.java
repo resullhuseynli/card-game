@@ -1,4 +1,4 @@
-package com.game.card.dto;
+package com.game.card.dto.dtoRequest;
 
 
 import lombok.AllArgsConstructor;

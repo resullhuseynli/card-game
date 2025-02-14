@@ -9,10 +9,12 @@ public class CardMapper {
 
 
     public Card toCard(DtoCard dtoCard) {
+
         Card card = new Card();
-        card.setWord(dtoCard.getWord());
-        card.setTranslation(dtoCard.getTranslation());
+        card.setWord(dtoCard.getWord().trim().toUpperCase().charAt(0) + dtoCard.getWord().trim().substring(1));
+        card.setTranslation(dtoCard.getTranslation().trim().toUpperCase().charAt(0) + dtoCard.getTranslation().trim().substring(1));
         return card;
+
     }
 
     public DtoCard toDtoCard(Card card) {
