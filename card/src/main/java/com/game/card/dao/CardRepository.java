@@ -14,4 +14,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Query("select c from Card c where c.language= :language")
     List<Card> getCardsByLanguage(Language language);
 
+    Card getCardsById(long id);
 }
