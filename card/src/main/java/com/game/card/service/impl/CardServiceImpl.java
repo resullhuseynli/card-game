@@ -4,9 +4,11 @@ import com.game.card.dao.CardRepository;
 import com.game.card.enums.Language;
 import com.game.card.model.Card;
 import com.game.card.service.CardService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
