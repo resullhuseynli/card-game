@@ -12,7 +12,7 @@ public interface CardService {
     List<Card> getCards();
     void addCard(Card card);
     void deleteCard(long id);
-    void updateCard(Card card);
+    void updateCard(long id, Card card);
     List<Card> getCardsByLanguage(String name);
 
 }
