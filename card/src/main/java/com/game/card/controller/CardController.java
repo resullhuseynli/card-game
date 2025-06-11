@@ -18,19 +18,19 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @GetMapping
+    @GetMapping("getAllCards")
     public ResponseEntity<List<Card>> getCards() {
         List<Card> cards = cardService.getCards();
         return cards.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(cards);
     }
 
-    @GetMapping
+    @GetMapping("getByLanguage")
     public ResponseEntity<List<Card>> getCardsByLanguage(Language language) {
         List<Card> cards = cardService.getCardsByLanguage(language);
         return cards.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(cards);
     }
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<Void> addCard(@RequestBody Card card) {
         cardService.addCard(card);
         return ResponseEntity.noContent().build();
