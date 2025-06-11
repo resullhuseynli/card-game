@@ -18,31 +18,31 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @GetMapping("getAllCards")
+    @GetMapping("/get")
     public ResponseEntity<List<Card>> getCards() {
         List<Card> cards = cardService.getCards();
         return cards.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(cards);
     }
 
-    @GetMapping("getByLanguage")
-    public ResponseEntity<List<Card>> getCardsByLanguage(Language language) {
+    @GetMapping("/getByLanguage")
+    public ResponseEntity<List<Card>> getCardsByLanguage(@RequestBody Language language) {
         List<Card> cards = cardService.getCardsByLanguage(language);
         return cards.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(cards);
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<Void> addCard(@RequestBody Card card) {
         cardService.addCard(card);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateCard(@RequestBody Card card, @PathVariable long id) {
         cardService.updateCard(id, card);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCard(@PathVariable long id) {
         cardService.deleteCard(id);
         return ResponseEntity.noContent().build();
